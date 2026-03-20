@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import { NextResponse } from "next/server"
 import { z } from "zod"
+import { ratelimit } from "@/lib/ratelimit"
+import { headers } from "next/headers"
 
 // Input validation schema
 const generateSchema = z.object({
@@ -16,6 +18,32 @@ const generateSchema = z.object({
 
 export async function POST(req: Request) {
   try {
+    // 1. Rate Limiting (Only if Upstash is configured)
+    if (process.env.UPSTASH_REDIS_REST_URL) {
+      const ip = (await headers()).get("x-forwarded-for") || "127.0.0.1"
+      const { success, limit, reset, remaining } = await ratelimit.limit(ip)
+      
+      if (!success) {
+        return NextResponse.json(
+          { 
+            error: "Too Many Requests", 
+            message: "You've reached your hourly limit (5 generations). Please try again later.",
+            limit,
+            remaining,
+            reset
+          }, 
+          { 
+            status: 429,
+            headers: {
+              "X-RateLimit-Limit": limit.toString(),
+              "X-RateLimit-Remaining": remaining.toString(),
+              "X-RateLimit-Reset": reset.toString(),
+            }
+          }
+        )
+      }
+    }
+
     const body = await req.json()
     const { diff, style, instruction, previousResponse } = generateSchema.parse(body)
 
