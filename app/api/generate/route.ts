@@ -27,7 +27,7 @@ export async function POST(req: Request) {
         return NextResponse.json(
           { 
             error: "Too Many Requests", 
-            message: "You've reached your hourly limit (3 generations). Please try again later.",
+            message: "You have reached your system limit. Please try from another IP or system, or try again after 1 hour.",
             limit,
             remaining,
             reset
