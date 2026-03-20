@@ -1,6 +1,7 @@
 "use client"
 
 import { CommitGenerator } from "@/components/commit-generator"
+import { UsageGuide } from "@/components/usage-guide"
 import { Sparkles, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -30,7 +31,10 @@ export default function GeneratePage() {
           <p className="text-muted-foreground mt-1">Paste your git diff below to craft perfect commit logs.</p>
         </motion.div>
 
-        <CommitGenerator />
+        <div className="flex flex-col gap-12 max-w-4xl mx-auto">
+          <CommitGenerator />
+          <UsageGuide />
+        </div>
       </div>
     </div>
   )
