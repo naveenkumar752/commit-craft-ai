@@ -1,0 +1,42 @@
+name: CommitCraft AI - Auto PR Description
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  generate-description:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install @google/generative-ai
+
+      - name: Generate PR Metadata
+        id: generate
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
+        run: node scripts/github-action.js
+
+      - name: Update PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --title "$(cat pr_title.txt || echo 'AI Generated PR')" \
+            --body-file pr_description.md
