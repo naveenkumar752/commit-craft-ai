@@ -76,7 +76,7 @@ export const useCommitStore = create<CommitState>()(
 
           if (!response.ok) {
             const errorData = await response.json()
-            throw new Error(errorData.error || "Failed to generate commit")
+            throw new Error(errorData.message || errorData.error || "Failed to generate commit")
           }
 
           const data = await response.json()
@@ -120,7 +120,7 @@ export const useCommitStore = create<CommitState>()(
 
           if (!response.ok) {
             const errorData = await response.json()
-            throw new Error(errorData.error || "Failed to refine commit")
+            throw new Error(errorData.message || errorData.error || "Failed to generate commit")
           }
 
           const data = await response.json()
