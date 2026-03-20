@@ -44,7 +44,7 @@ export const useCommitStore = create<CommitState>()(
 
       setDiff: (diff) => set({ diff, error: null }),
       setStyle: (style) => set({ style }),
-      setRefinementInstruction: (instruction) => set({ refinementInstruction: instruction }),
+      setRefinementInstruction: (instruction) => set({ refinementInstruction: instruction, error: null }),
       
       addToHistory: (result, style) => {
         const newEntry: CommitHistoryItem = {
@@ -54,6 +54,7 @@ export const useCommitStore = create<CommitState>()(
         }
         set((state) => ({
           history: [newEntry, ...state.history].slice(0, 50),
+          error: null,
         }))
       },
 

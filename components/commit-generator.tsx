@@ -41,10 +41,13 @@ export function CommitGenerator() {
     
     try {
       await generateCommit()
-      if (!useCommitStore.getState().error) {
+      const currentError = useCommitStore.getState().error
+      if (!currentError) {
         toast.success("Magic generated!")
+      } else {
+        toast.error(currentError)
       }
-    } catch (err) {}
+    } catch (err: any) {}
   }
 
   const handleRefine = async () => {
@@ -52,10 +55,13 @@ export function CommitGenerator() {
     
     try {
       await refineCommit()
-      if (!useCommitStore.getState().error) {
+      const currentError = useCommitStore.getState().error
+      if (!currentError) {
         toast.success("Response refined!")
+      } else {
+        toast.error(currentError)
       }
-    } catch (err) {}
+    } catch (err: any) {}
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -97,7 +103,24 @@ export function CommitGenerator() {
                 </div>
               </div>
               
-              <Tabs defaultValue="edit" className="w-full">
+              {/* Error Message */}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: "auto" }}
+                  exit={{ opacity: 0, y: -10, height: 0 }}
+                  className="mb-8"
+                >
+                  <div className="flex items-center gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium">
+                    <AlertCircle className="h-5 w-5 shrink-0" />
+                    <span>{error}</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <Tabs defaultValue="edit" className="w-full">
                 <div className="flex justify-end mb-4">
                   <TabsList className="bg-muted/50 p-1 rounded-xl border border-border/50">
                     <TabsTrigger value="edit" className="rounded-lg gap-2 text-xs font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
