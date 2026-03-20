@@ -13,10 +13,8 @@ import {
 } from "@/components/ui/select"
 import { Sparkles, Terminal, RotateCcw, AlertCircle, Wand2, MessageSquare, Send, Eye, Edit3 } from "lucide-react"
 import { OutputSection } from "@/components/output-section"
-import { RichDiffViewer } from "@/components/rich-diff-viewer"
 import { useCommitStore } from "@/store/use-commit-store"
 import { toast } from "sonner"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function CommitGenerator() {
   const { 
@@ -104,23 +102,22 @@ export function CommitGenerator() {
               </div>
               
               {/* Error Message */}
-            <AnimatePresence>
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10, height: 0 }}
-                  animate={{ opacity: 1, y: 0, height: "auto" }}
-                  exit={{ opacity: 0, y: -10, height: 0 }}
-                  className="mb-8"
-                >
-                  <div className="flex items-center gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium">
-                    <AlertCircle className="h-5 w-5 shrink-0" />
-                    <span>{error}</span>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <AnimatePresence>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: "auto" }}
+                    exit={{ opacity: 0, y: -10, height: 0 }}
+                    className="mb-8"
+                  >
+                    <div className="flex items-center gap-3 p-4 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium">
+                      <AlertCircle className="h-5 w-5 shrink-0" />
+                      <span>{error}</span>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-            <Tabs defaultValue="edit" className="w-full h-full">
               <div className="relative group/textarea">
                 <Textarea
                   placeholder="Paste your git diff (e.g., git diff main...feature) or staged changes..."
@@ -138,7 +135,6 @@ export function CommitGenerator() {
                   </div>
                 )}
               </div>
-            </Tabs>
             </div>
 
             <div className="flex flex-col md:flex-row gap-8 items-end justify-between pt-4 border-t border-border/40">
