@@ -120,43 +120,25 @@ export function CommitGenerator() {
               )}
             </AnimatePresence>
 
-            <Tabs defaultValue="edit" className="w-full">
-                <div className="flex justify-end mb-4">
-                  <TabsList className="bg-muted/50 p-1 rounded-xl border border-border/50">
-                    <TabsTrigger value="edit" className="rounded-lg gap-2 text-xs font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
-                      <Edit3 className="h-3.5 w-3.5" /> Edit
-                    </TabsTrigger>
-                    <TabsTrigger value="preview" className="rounded-lg gap-2 text-xs font-bold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">
-                      <Eye className="h-3.5 w-3.5" /> Preview
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-
-                <TabsContent value="edit" className="mt-0 focus-visible:outline-none">
-                  <div className="relative group/textarea">
-                    <Textarea
-                      placeholder="Paste your git diff (e.g., git diff main...feature) or staged changes..."
-                      className="min-h-[300px] font-mono text-[13px] leading-relaxed bg-muted/10 border-border/40 focus-visible:ring-offset-0 focus-visible:ring-2 focus-visible:ring-primary/20 rounded-3xl resize-none transition-all duration-500 placeholder:text-muted-foreground/40 p-6 shadow-inner"
-                      value={diff}
-                      onChange={(e) => setDiff(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                    />
-                    {!diff && (
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 group-hover/textarea:opacity-30 transition-opacity">
-                        <div className="flex flex-col items-center gap-3">
-                          <Wand2 className="h-12 w-12 text-primary animate-pulse" />
-                          <p className="text-sm font-medium">Ready for your code...</p>
-                        </div>
-                      </div>
-                    )}
+            <Tabs defaultValue="edit" className="w-full h-full">
+              <div className="relative group/textarea">
+                <Textarea
+                  placeholder="Paste your git diff (e.g., git diff main...feature) or staged changes..."
+                  className="min-h-[350px] font-mono text-[13px] leading-relaxed bg-muted/10 border-border/40 focus-visible:ring-offset-0 focus-visible:ring-2 focus-visible:ring-primary/20 rounded-3xl resize-none transition-all duration-500 placeholder:text-muted-foreground/40 p-6 shadow-inner"
+                  value={diff}
+                  onChange={(e) => setDiff(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                />
+                {!diff && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 group-hover/textarea:opacity-30 transition-opacity">
+                    <div className="flex flex-col items-center gap-3">
+                      <Wand2 className="h-12 w-12 text-primary animate-pulse" />
+                      <p className="text-sm font-medium">Ready for your code...</p>
+                    </div>
                   </div>
-                </TabsContent>
-                <TabsContent value="preview" className="mt-0 focus-visible:outline-none">
-                  <div className="min-h-[300px] rounded-3xl overflow-hidden border border-dashed border-border/50 bg-muted/5">
-                    <RichDiffViewer diffText={diff} />
-                  </div>
-                </TabsContent>
-              </Tabs>
+                )}
+              </div>
+            </Tabs>
             </div>
 
             <div className="flex flex-col md:flex-row gap-8 items-end justify-between pt-4 border-t border-border/40">
